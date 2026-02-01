@@ -92,6 +92,9 @@ export default function Hero() {
                     <p className="text-xs sm:text-sm text-coffee/70 mt-1 break-words">
                       Cafés Gourmet 100% Arábica - {product.weight}
                     </p>
+                    <p className="text-xs text-coffee/60 mt-1">
+                      Em grãos • Opção de moer
+                    </p>
                   </div>
                 </Link>
               </div>

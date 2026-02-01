@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductById } from "@/data/products";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartSection from "./AddToCartSection";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -56,7 +56,7 @@ export default async function ProdutoPage({ params }: PageProps) {
             </p>
 
             <div className="mb-10">
-              <AddToCartButton product={product} />
+              <AddToCartSection product={product} />
             </div>
 
             <div className="space-y-6 text-coffee/90 leading-relaxed">

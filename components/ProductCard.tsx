@@ -40,6 +40,7 @@ export default function ProductCard({ product, variant = "standard" }: ProductCa
       price: product.price,
       weight: product.weight,
       image: product.image,
+      grindOption: "grao",
     });
   };
 
@@ -69,9 +70,10 @@ export default function ProductCard({ product, variant = "standard" }: ProductCa
             />
           </div>
           <div className="p-6 flex flex-col flex-1">
-            <h3 className="font-serif font-bold text-xl text-white mb-3">
+            <h3 className="font-serif font-bold text-xl text-white mb-1">
               {product.name} {product.weight}
             </h3>
+            <p className="text-white/80 text-xs mb-3">Em grãos • Opção de moer</p>
             <p className="text-white/90 text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
               {product.description}
             </p>
@@ -108,9 +110,12 @@ export default function ProductCard({ product, variant = "standard" }: ProductCa
           />
         </div>
         <div className="p-6 flex-1 flex flex-col">
-          <h3 className="font-serif font-bold text-lg text-coffee text-center mb-4">
+          <h3 className="font-serif font-bold text-lg text-coffee text-center mb-1">
             {product.name} {product.weight}
           </h3>
+          <p className="text-xs text-coffee/60 text-center mb-4">
+            Em grãos • Opção de moer
+          </p>
           <div className="flex justify-center gap-4 mb-4 flex-wrap">
             {attributes.map((attr, i) => (
               <div

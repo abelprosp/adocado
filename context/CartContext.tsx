@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 
+export type GrindOption = "grao" | "moido";
+
 export interface CartItem {
   id: string;
   name: string;
@@ -9,13 +11,14 @@ export interface CartItem {
   quantity: number;
   weight: string;
   image?: string;
+  grindOption?: GrindOption;
 }
 
 interface CartContextType {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeItem: (id: string, grindOption?: GrindOption) => void;
+  updateQuantity: (id: string, quantity: number, grindOption?: GrindOption) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -36,32 +39,47 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addItem = useCallback(
     (item: Omit<CartItem, "quantity">, quantity = 1) => {
       setItems((prev) => {
-        const existing = prev.find((i) => i.id === item.id);
+        const grind = item.grindOption ?? "grao";
+        const existing = prev.find(
+          (i) => i.id === item.id && (i.grindOption ?? "grao") === grind
+        );
         if (existing) {
           return prev.map((i) =>
-            i.id === item.id
+            i.id === item.id && (i.grindOption ?? "grao") === grind
               ? { ...i, quantity: i.quantity + quantity }
               : i
           );
         }
-        return [...prev, { ...item, quantity }];
+        return [...prev, { ...item, grindOption: grind, quantity }];
       });
       setIsCartOpen(true);
     },
     []
   );
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
-  }, []);
-
-  const updateQuantity = useCallback((id: string, quantity: number) => {
+  const removeItem = useCallback((id: string, grindOption?: GrindOption) => {
     setItems((prev) =>
-      prev
-        .map((i) => (i.id === id ? { ...i, quantity } : i))
-        .filter((i) => i.quantity > 0)
+      prev.filter(
+        (i) =>
+          !(i.id === id && (i.grindOption ?? "grao") === (grindOption ?? "grao"))
+      )
     );
   }, []);
+
+  const updateQuantity = useCallback(
+    (id: string, quantity: number, grindOption?: GrindOption) => {
+      setItems((prev) =>
+        prev
+          .map((i) =>
+            i.id === id && (i.grindOption ?? "grao") === (grindOption ?? "grao")
+              ? { ...i, quantity }
+              : i
+          )
+          .filter((i) => i.quantity > 0)
+      );
+    },
+    []
+  );
 
   const clearCart = useCallback(() => setItems([]), []);
 

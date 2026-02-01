@@ -26,11 +26,14 @@ export default function CartDrawer({
       currency: "BRL",
     });
 
+  const getGrindLabel = (opt?: string) =>
+    opt === "moido" ? "moído" : "em grãos";
+
   const getWhatsAppMessage = () => {
     const orderLines = items
       .map(
         (item) =>
-          `• ${item.name} (${item.weight}) - ${item.quantity}x - ${formatPrice(item.price * item.quantity)}`
+          `• ${item.name} (${item.weight}) - ${getGrindLabel(item.grindOption)} - ${item.quantity}x - ${formatPrice(item.price * item.quantity)}`
       )
       .join("\n");
     const total = formatPrice(totalPrice);
@@ -108,7 +111,7 @@ export default function CartDrawer({
             <ul className="space-y-4">
               {items.map((item) => (
                 <li
-                  key={item.id}
+                  key={`${item.id}-${item.grindOption ?? "grao"}`}
                   className="flex gap-4 p-4 bg-white rounded-xl border border-sand/20"
                 >
                   <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-sand/20">
@@ -128,11 +131,17 @@ export default function CartDrawer({
                     <h3 className="font-medium text-coffee truncate">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-coffee/70">{item.weight}</p>
+                    <p className="text-sm text-coffee/70">
+                      {item.weight} • {getGrindLabel(item.grindOption)}
+                    </p>
                     <div className="flex items-center gap-2 mt-1">
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
+                          updateQuantity(
+                            item.id,
+                            item.quantity - 1,
+                            item.grindOption
+                          )
                         }
                         className="w-7 h-7 rounded-full border border-sand bg-white text-coffee hover:bg-sand/20 text-sm font-bold"
                       >
@@ -143,7 +152,11 @@ export default function CartDrawer({
                       </span>
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
+                          updateQuantity(
+                            item.id,
+                            item.quantity + 1,
+                            item.grindOption
+                          )
                         }
                         className="w-7 h-7 rounded-full border border-sand bg-white text-coffee hover:bg-sand/20 text-sm font-bold"
                       >
@@ -156,7 +169,7 @@ export default function CartDrawer({
                       {formatPrice(item.price * item.quantity)}
                     </p>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.id, item.grindOption)}
                       className="text-red-600 hover:text-red-700 text-sm"
                     >
                       Remover
