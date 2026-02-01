@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+:root {
+  --cream: #F1FAEE;
+  --sand: #FAE3B9;
+  --coffee: #01200F;
+  --espresso: #01200F;
+  --copper: #893302;
+  --navy: #003049;
+  --maroon: #540B0E;
+  --rust: #78290F;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Lato', system-ui, sans-serif;
+  overflow-x: hidden;
+}
